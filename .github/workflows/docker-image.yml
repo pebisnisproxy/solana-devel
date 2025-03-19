@@ -6,17 +6,20 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  IMAGE_NAME: ghcr.io/${{ github.actor }}/solana-devel
+  IMAGE_TAG: ${{ github.sha }}
+
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Build & Push the Docker image
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GH_PAT }} ghcr.io
-        docker build . --file Dockerfile --tag ghcr.io/${{ github.actor }}/solana-devel:$(date +%s)
-        docker push ghcr.io/${{ github.actor }}/solana-devel
-        
+        docker build . --file dockerfile --tag $IMAGE_NAME:$IMAGE_TAG
+        docker push $IMAGE_NAME:$IMAGE_TAG
+        docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
+        docker push $IMAGE_NAME:latest
+        echo "Docker image pushed to $IMAGE_NAME:$IMAGE_TAG and $IMAGE_NAME:latest"
