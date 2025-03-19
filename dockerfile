@@ -1,5 +1,9 @@
 FROM ubuntu:latest
 
+LABEL org.opencontainers.image.source = "https://github.com/pebisnisproxy/solana-devel"
+LABEL org.opencontainers.image.description = "Solana Development Docker Image"
+LABEL org.opencontainers.image.licenses = "MIT"
+
 ENV SOLANA_INSTALL_DIR="/root/.local/share/solana/install/active_release/bin"
 ENV PATH="$SOLANA_INSTALL_DIR:$PATH"
 
